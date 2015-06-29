@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>2d Example</title>
+      <style type="text/css" media="screen">
+        .progress-contain {
+          position: absolute;
+          width: 0%;
+          overflow: hidden;
+        }
+        section {
+          float: left;
+          margin: 0 9%;
+        }
+      </style>
+    </head>
+  <body>
+    <section>
+      <h2 class="showing">Time Domain:</h2>
+      <canvas id="time"
+              width="300"
+              height="300"></canvas>
+    </section>
+
+    <section>
+      <h2 class="showing">Frequency Domain:</h2>
+      <canvas id="frequency"
+              width="300"
+              height="300"></canvas>
+    </section>
+
+    <section>
+      <h2 class="showing">WAVEFORM (time domain):</h2>
+      <div class="wave-contain" style="position: relative;">
+        <div class="progress-contain">
+          <canvas id="wave-progress"
+                  width="600"
+                  height="300"></canvas>
+        </div>
+        <div class="wave-contain">
+          <canvas id="wave"
+                  width="600"
+                  height="300"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="showing">Volume (frequency domain):</h2>
+      <canvas id="volume"
+              width="300"
+              height="300"></canvas>
+    </section>
+      <script type="text/javascript" src="2d-bundle.js"></script>
+    </body>
+</html>
