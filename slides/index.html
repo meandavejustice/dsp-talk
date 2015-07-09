@@ -44,11 +44,18 @@
          background: #6EF4AF;
       }
 
+      .wave-contain {
+      width: 600px;
+      }
+
       .progress-contain {
       position: absolute;
       width: 0%;
       overflow: hidden;
+      max-width: 600px;
+      z-index: 2;
       }
+      .wave {position: absolute;}
     </style>
 	</head>
 
@@ -169,7 +176,9 @@
           <section>
             <h2>Audio Graph</h2>
             <p>Chain of nodes by which your audio signal passes through</p>
-            <img style="height: 600px;border: none;box-shadow: none;margin-top: -30px;" src="img/web-audio-editor.png" alt="" />
+            <a href="https://meandavejustice.github.io/audio-graph-editor">
+              <img style="height: 600px;border: none;box-shadow: none;margin-top: -30px;" src="img/web-audio-editor.png" alt="" />
+            </a>
             <small>firefox's web audio editor</small>
 				  </section>
 
@@ -237,7 +246,7 @@
                           width="600"
                           height="300"></canvas>
                 </div>
-                <div class="wave-contain">
+                <div class="wave">
                   <canvas id="wave"
                           width="600"
                           height="300"></canvas>

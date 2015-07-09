@@ -1,11 +1,3 @@
-/*
- * Load mp3 better! github is slow
- * Different audio
- * credits for else-marie-pade
- * 
- * */
-
-
 var AudioSource = require('audiosource');
 var FFT = require('audio-fft');
 var drawWave = require('draw-wave');
@@ -22,21 +14,23 @@ var freqFFT = new FFT(ctx, {
 });
 
 var src = new AudioSource({
-  url: 'else-marie.mp3',
+  url: 'faust-clip.wav',
   context: ctx,
   gainNode: ctx.createGain(),
   nodes: [timeFFT, freqFFT]
 });
 
+src.load();
+
 var loadBtn = document.querySelector('#load-audio');
 
 loadBtn.addEventListener('click', function(ev) {
-  loadBtn.innerText = 'loading...';
+  loadBtn.innerText = 'playing...';
   if (src.playing) {
     src.stop();
     loadBtn.innerText = 'stopped';
   }
-  else src.load();
+  else src.play();
 })
 
 var progress = document.querySelector('.progress-contain');
@@ -46,7 +40,6 @@ src.on('time', function(time) {
 })
 
 src.on('load', function() {
-  src.play();
   drawWave.canvas(progress.querySelector('#wave-progress'), src.buffer, '#DF79DF');
   drawWave.canvas(document.querySelector('#wave'), src.buffer, '#52F6A4');
   loadBtn.innerText = 'LOADED!';
