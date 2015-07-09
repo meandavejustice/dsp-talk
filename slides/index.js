@@ -1,3 +1,11 @@
+/*
+ * Load mp3 better! github is slow
+ * Different audio
+ * credits for else-marie-pade
+ * 
+ * */
+
+
 var AudioSource = require('audiosource');
 var FFT = require('audio-fft');
 var drawWave = require('draw-wave');
