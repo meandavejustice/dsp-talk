@@ -1,4 +1,9 @@
-* https://www.youtube.com/watch?v=YS6jaqeXVok - Frequency Domain 1.0 - Introduction to Frequency Domain View of Signals
-* dspguru.com
-* dspguide.com
- *marina abramavic
+* [Frequency Domain 1.0 - Introduction to Frequency Domain View of Signals](https://www.youtube.com/watch?v=YS6jaqeXVok)
+* [http://dspguru.com](http://dspguru.com)
+* [http://dspguide.com](http://dspguide.com)
+* [An Interactive Guide To The Fourier Transform](http://betterexplained.com/articles/an-interactive-guide-to-the-fourier-transform/)
+* [web-audio-api](http://webaudio.github.io/web-audio-api/)
+* [Ptolemy and Homer (Simpson)](https://www.youtube.com/watch?v=QVuU2YCwHjw&feature=youtu.be)
+* [studio.substack.net](http://studio.substack.net/)
+* [audio-source-editor](https://davejustice.com/audio-source-editor)
+* [web-audio-modules](https://davejustice.com/web-audio-modules)

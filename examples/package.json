@@ -1,13 +1,17 @@
 {
-  "name": "examples",
+  "name": "dsp-talk-examples",
   "version": "1.0.0",
-  "description": "",
-  "main": "2d.js",
+  "description": "examples from a talk on digital signal processing",
+  "main": "index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch-2d": "watchify -o 2d-bundle.js -v -d 2d.js",
+    "serve": "http-server -c -1",
+    "watch-3d": "watchify -o 3d-bundle.js -v -d 3d.js",
+    "start": "npm run watch-2d & npm run serve"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "meandave",
+  "license": "MIT",
   "dependencies": {
     "audio-fft": "^0.1.1",
     "audiosource": "^1.2.1",

@@ -19,7 +19,13 @@ var src = new AudioSource({
   nodes: [timeFFT, freqFFT]
 });
 
-src.load();
+var loadBtn = document.querySelector('#load-audio');
+
+loadBtn.addEventListener('click', function(ev) {
+  loadBtn.innerText = 'loading...';
+  src.load();
+})
+
 var progress = document.querySelector('.progress-contain');
 
 src.on('time', function(time) {
@@ -30,4 +36,5 @@ src.on('load', function() {
   src.play();
   drawWave.canvas(progress.querySelector('#wave-progress'), src.buffer, '#DF79DF');
   drawWave.canvas(document.querySelector('#wave'), src.buffer, '#52F6A4');
+  loadBtn.innerText = 'LOADED!';
 });

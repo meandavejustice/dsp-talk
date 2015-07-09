@@ -1,0 +1,18 @@
+{
+  "name": "dsp-talk-slides",
+  "version": "1.0.0",
+  "description": "my slides for cascadiaJS 2015",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "watchify -o bundle.js -v -d index.js & http-server -c-1"
+  },
+  "author": "meandave",
+  "license": "ISC",
+  "dependencies": {
+    "audio-fft": "^0.1.1",
+    "audio-worker-node": "^0.1.2",
+    "audiosource": "^1.2.1",
+    "draw-wave": "^2.0.0"
+  }
+}

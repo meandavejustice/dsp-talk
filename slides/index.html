@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Digital Signal Processing</title>
+
+		<meta name="description" content="A presentation about digital
+		signal processing, in the web browser.">
+		<meta name="author" content="Dave Justice">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/modified-white-theme.css" id="theme">
+    <link rel="stylesheet" href="css/far.css">
+    <!-- <link rel="stylesheet" href="css/modified-black-theme.css" id="theme"> -->
+		
+
+    <style type="text/css" media="screen">
+      @font-face {
+        font-family: friz;
+        src: local("Friz Quadrata Bold"),
+        local("Friz Quadrata-Bold"),
+        url('Friz Quadrata Bold.ttf');
+        font-weight: bold;
+        }
+      .reveal {
+         font-family: friz;
+         }
+      .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+             font-family: friz;
+     }
+
+     .reveal .progress {
+         height: 5px;
+     }
+
+     .reveal .progress span {
+         background: #6EF4AF;
+      }
+
+      .progress-contain {
+      position: absolute;
+      width: 0%;
+      overflow: hidden;
+      }
+    </style>
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>Making Waves</h1>
+        <h3>Digital Signal Processing In the browser</h3>
+				<p>
+			      <p>Dave Justice</p>
+            <p>@meandave2020</p>
+            <p>@meandavejustice</p>
+				</p>
+				</section>
+
+				<section class="stack">
+          <section>
+            <h2>Digital Signal Processing</h2>
+            <p>The use of mathematics to modify an information
+              signal.</p>
+          </section>
+          <section>
+            <h2>Get Data</h2>
+            <ul>
+              <li>Get data about the signal (get amplitude peaks from audio signal)</li>
+              <li>Get data about the environment of the signal (sonar/radar)</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Modify Signal</h2>
+            <ul>
+              <li>Output a modified version of the signal (reverb effect pedal)</li>
+              <li>Produce a new signal (sythesize speech from text signal)</li>
+            </ul>
+          </section>
+				</section>
+
+				<section class="stack">
+          <section>
+            <h3>Sinusoid</h3>
+            <p>(just a sine wave)</p>
+            <img src="img/sine_wave.svg" style="border:none; box-shadow:none;" alt="" />
+          </section>
+          <section>
+            <h3>Amplitude</h3>
+            <p>(Loudness over time)</p>
+            <img src="img/amplitude.png" style="border:none; box-shadow:none;" alt="" />
+          </section>
+          <section>
+            <h3>Magnitude</h3>
+            <p>(amplitude, minus the negative values)</p>
+          </section>
+          <section>
+            <h3>Frequency</h3>
+            <p>Rate of repetition of events over time.</p>
+          </section>
+        </section>
+
+        <section>
+          <h2>Fourier Series</h2>
+          <p>Any waveform is just a sum of sine waves.</p>
+          <br />
+          <img style="border:none; box-shadow:none;" src="img/jean-baptiste-joseph-fourier.jpg" alt="" />
+				</section>
+
+        <section>
+					<h2>Time Domain</h2>
+          <p>A graph of samples over time.</p>
+          <img src="img/time-domain.png" style="border:none; box-shadow:none;" alt="" />
+				</section>
+
+				<section>
+					<h2>Frequency Domain</h2>
+          <p>Graph of magnitude of frequencies.</p>
+          <img src="img/frequency-domain.jpg" style="border:none; box-shadow:none;" alt="" />
+				</section>
+
+        <section class="stack">
+          <section>
+            <h2>Discrete Fourier Transform</h2>
+            <p>converts time-domain samples into frequency domain data.</p>
+          </section>
+          <section>
+            <img src="img/fttfd.gif" width="600" height="600" style="border: none; box-shadow:none;" alt="" />
+          </section>
+				</section>
+
+        <section class="stack">
+          <section>
+            <h2>Web Audio API</h2>
+            <p>Native browser api for synthesizing, modifying, and scheduling sounds.</p>
+          </section>
+
+          <section>
+            <h2>High level usage</h2>
+            <pre><code class="js">
+              function playNote(frequency) {
+                // create our audioContext (generally one per page)
+                var audioContext = new window.AudioContext();
+                var oscNode = audioContext.createOscillator();
+                var gainNode = audioContext.createGain();
+                gainNode.gain.value = 1; // between 0 and 1
+                oscNode.type = 'triangle'; // shape of wave
+                oscNode.frequency.value = frequency; // rate to oscillate, higher raises pitch
+                oscNode.connect(gain); // connect to gain node, so we can control amplitude(volume)
+                gainNode.connect(audioContext.destination); // connect to speakers
+                oscNode.start(); // play it!x
+              }
+
+              playNote(440);
+            </code></pre>
+          </section>
+
+          <section>
+            <h2>Audio Graph</h2>
+            <p>Chain of nodes by which your audio signal passes through</p>
+            <img style="height: 600px;border: none;box-shadow: none;margin-top: -30px;" src="img/web-audio-editor.png" alt="" />
+            <small>firefox's web audio editor</small>
+				  </section>
+
+          <section>
+            <h2>Analyser Node</h2>
+            <p>Runs a FFT over our signal allowing us to get data in
+              the time or frequency domain.</p>
+            <pre><code class="js">
+              // just another node in our audio graph...
+              var oscNode = audioContext.createOscillator();
+              var analyserNode = audioContext.createAnalyser();
+              var procNode = audioContext.createScriptProcessor(256, 1, 1);
+              var data = new Uint8Array(analyserNode.frequencyBinCount);
+              
+              analyserNode.connect(procNode);
+              procNode.onaudioprocess = function() {
+                analyserNode.getByteFrequencyData(data); // fills our array with data
+                // loop over data and draw to our canvas element
+              }
+              analyserNode.connect(oscNode);
+              procNode.connect(oscNode);
+
+              oscNode.start();
+            </code></pre>
+				  </section>
+
+          <section>
+            <h2>Script Processor Node</h2>
+            <p>Allows us to process audio in real time</p>
+            <ul>
+              <li>'onaudioprocess' event</li>
+              <li>runs in main thread</li>
+              <li>Hard to reuse</li>
+            </ul>
+				  </section>
+        </section>
+
+        <section class="stack">
+          <section>
+            <h2>Visualizing our signal in 2d</h2>
+            <li>Real-time Time Domain</li>
+            <li>Real-time Frequency Domain</li>
+            <li>Waveform Time Domain</li>
+            <button id="load-audio">Load Audio</button>
+          </section>
+          <section>
+					    <h2>Time Domain</h2>
+              <canvas id="time"
+                      width="600"
+                      height="300"></canvas>
+            </section>
+
+            <section>
+              <h2>Frequency Domain</h2>
+              <canvas id="frequency"
+                      width="600"
+                      height="300"></canvas>
+            </section>
+
+            <section>
+              <h2>WAVEFORM (time domain)</h2> 
+              <div class="wave-contain" style="position: relative;">
+                <div class="progress-contain">
+                  <canvas id="wave-progress"
+                          width="600"
+                          height="300"></canvas>
+                </div>
+                <div class="wave-contain">
+                  <canvas id="wave"
+                          width="600"
+                          height="300"></canvas>
+                </div>
+              </div>
+            </section>
+				</section>
+
+        <section class="stack">
+          <section>
+            <h2>Audio Worker</h2>
+            <p>WebWorker with an audioContext</p>
+            <ul>
+              <li>Similiar to webworker</li>
+              <li>Runs in it's own process</li>
+              <li>Replaces scriptProcessorNode</li>
+              <li>Create your own custom Nodes!</li>
+              <li>Runs YOUR JavaScript</li>
+              <li>More possibilities for DSP!</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Bitcrusher</h2>
+            <pre><code class="js">
+              var bitcrusherNode = new AudioWorkerNode(ctx, "bitcrusher-worker.js", 1, 1);
+              bitcrusherNode.addParameter("bits", 8);
+              bitcrusherNode.addParameter("frequencyReduction", 0.5);
+            </code></pre>
+
+            <pre><code class="js">
+              // bitcrusher-worker.js
+              onaudioprocess= function (e) {
+                for (var channel=0; channel&lt;e.inputBuffers.length; channel++) {
+                  var inputBuffer = e.inputBuffers[channel];
+                  var outputBuffer = e.outputBuffers[channel];
+                    ...
+                    // blah blah blah process my buffer
+                    outputBuffer[i] = lastDataValue;
+                  }
+                }
+              };              
+            </code></pre>
+          </section>
+
+          <section>
+              <h2>Bitcrusher Node</h2>
+              <small>using the shim, mohayonao/audio-worker-node</small>
+              <br />
+              <button id="crush-butt">Play Bitcrusher version</button>
+              <button id="play-og" >Play Original</button>
+              <br />
+              <canvas id="time-bc" width="300" height="300"></canvas>
+              <canvas id="frequency-bc" width="300" height="300"></canvas>
+          </section>
+
+          <section>
+            <h2>Use audio workers</h2>
+            <ul>
+              <li>Doesn't run in the main thread.</li>
+              <li>code is more reusable</li>
+              <li>publish tons of effects on NPM!</li>
+              <li>Can shim today</li>
+            </ul>
+          </section>
+				</section>
+
+        <section>
+          <h2>Community Effort</h2>
+          <li><a href="https://meandavejustice.github.io/web-audio-modules">web-audio-modules</a></li>
+          <li><a href="https://meandavejustice.github.io/audio-graph-editor">audio-graph-editor</a></li>
+          <li><a href="https://github.com/openmusic">https://github.com/openmusic</a></li>
+          <!-- <li><a href=""></a></li> -->
+          <!-- <li><a href=""></a></li> -->
+          <!-- <li><a href=""></a></li> -->
+        </section>
+
+        <section>
+            <h2>Thank You</h2>
+            <ul>
+              <li><a href="http://davejustice.com">http://davejustice.com</a></li>
+              <li><a href="http://meandave.com">http://meandave.com</a></li>
+              <li><a href="http://edit.cassettetap.es">http://edit.cassettetap.es</a></li>
+              <li><a href="http://boringengineering.net">http://boringengineering.net</a></li>
+            </ul>
+        </section>
+      </div>
+		</div>
+
+		<script src="js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: false,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'none', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+			{ src: 'js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'js/highlight.js', async: true, condition: function() { return !!document.querySelectorAll('pre'); }, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+
+		</script>
+    <!-- link 2 mah bundle (compiled from index.js) -->
+    <script type="text/javascript" src="bundle.js"></script>
+	</body>
+</html>
